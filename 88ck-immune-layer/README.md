@@ -1,119 +1,335 @@
+<div align="center">
+
+<img src="https://img.shields.io/badge/88%2FCK-Immune%20Layer-0d1117?style=for-the-badge&labelColor=0d1117&color=00d4ff" alt="88/CK Immune Layer"/>
+
 # 88/CK Immune Layer
 
-[![S(t) live](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatus.example.com%2F88ck%2Fstability.json)](https://status.example.com/88ck)
-[![Build](https://img.shields.io/github/actions/workflow/status/rock4007/88-ck-all-attack-vectors-blocks-/ci.yml?branch=main)](./.github/workflows/ci.yml)
-[![Coverage](https://img.shields.io/badge/coverage-enforced-brightgreen)](./.github/workflows/ci.yml)
-[![arXiv](https://img.shields.io/badge/arXiv-2401.88088-b31b1b.svg)](https://arxiv.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+**Autonomous defense infrastructure for distributed systems at scale.**
 
-88/CK Immune Layer is a resilience platform for autonomous defense in modern distributed systems. It combines adaptive policy control, consensus integrity, anomaly detection, and Lyapunov-constrained orchestration into one operational stack.
+[![Build](https://img.shields.io/github/actions/workflow/status/rock4007/88-ck-all-attack-vectors-blocks-/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/rock4007/88-ck-all-attack-vectors-blocks-/actions)
+[![Security Scan](https://img.shields.io/github/actions/workflow/status/rock4007/88-ck-all-attack-vectors-blocks-/security-scan.yml?branch=main&style=flat-square&label=Security%20Scan&color=green)](https://github.com/rock4007/88-ck-all-attack-vectors-blocks-/actions)
+[![Go Version](https://img.shields.io/badge/Go-1.22%2B-00ADD8?style=flat-square&logo=go)](https://go.dev)
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python)](https://python.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](./LICENSE)
+[![Coverage](https://img.shields.io/badge/Coverage-Enforced-brightgreen?style=flat-square)](./github/workflows/ci.yml)
 
-## Why It Matters
-- Stops unsafe rollouts before they destabilize production.
-- Connects detection, consensus, and control loops into measurable stability outcomes.
-- Ships with security-first defaults: distroless runtimes, PQ-safe consensus posture, and adversarial validation paths.
+<br/>
 
-## System Pillars
-Three pillars and one supervisory engine power the architecture:
-- Pillar 1 Morphic: adaptive scheduling and xDS policy propagation.
-- Pillar 2 Consensus: HotStuff-inspired agreement with PQ-safe attestation abstraction.
-- Pillar 3 Entropy: embedding and graph-based anomaly detection with explainability.
-- Stability Engine: Lyapunov-constrained control loop that blocks destabilizing rollout proposals.
+> *Stop attacks before they happen. Block instability before it spreads. Defend every layer — automatically.*
 
-## Core capabilities
-- Autonomous stability guardrail with predictive proposal evaluation.
-- Gamma coupling controls to constrain cross-pillar destabilization.
-- Distroless runtime images for all service containers.
-- Security scanning and adversarial regression workflows in GitHub Actions.
-- Helm and Docker Compose deployment assets for fast environment bring-up.
+</div>
 
-## Repository layout
-- pillar1-morphic: gateway runtime, scheduler, gamma coupling, xDS publisher.
-- pillar2-consensus: consensus proposal path, PQ signature abstraction, NHI verification.
-- pillar3-entropy: detector entrypoint, baseline scoring, WL-style graph scorer, explainability.
-- stability-engine: evaluation API, Lyapunov floor checks, orchestration and incident sink.
-- frontend: React + Vite operations UI.
-- adversarial-harness: MITRE-style scenario runner (private code path).
-- infra: compose files, Helm chart, Prometheus alerts and recording rules.
-- docs: architecture, theory, coupling problem statement, API summary.
+---
 
-## For Platform Teams
-- Deploy each pillar independently, then couple them progressively through guarded rollout policies.
-- Use Stability Engine as the final control gate before production changes.
-- Wire Prometheus alerts on S(t) and gamma coupling drift to enforce operational guardrails.
+## What is 88/CK Immune Layer?
 
-## Quick start
+88/CK Immune Layer is a **production-grade, multi-pillar security and resilience platform** designed to protect distributed systems from the ground up. It combines:
+
+- 🧠 **Adaptive policy control** that morphs to attack patterns in real time
+- 🔐 **Zero-knowledge consensus** so nodes agree without revealing state
+- 🕵️ **AI-powered anomaly detection** with graph and embedding analysis
+- ⚖️ **Lyapunov-constrained orchestration** that mathematically prevents destabilizing changes
+- 🛡️ **Ingress threat neutralization** — SQL injection, malware payloads, command injection — blocked and defused at the gate
+
+---
+
+## Architecture at a Glance
+
+```
+                        ┌─────────────────────────────────────────────┐
+                        │              88/CK Immune Layer              │
+                        └──────────────────┬──────────────────────────┘
+                                           │
+            ┌──────────────────────────────┼──────────────────────────────┐
+            │                             │                              │
+    ┌───────▼────────┐           ┌────────▼───────┐            ┌────────▼───────┐
+    │  Pillar 1      │           │  Pillar 2      │            │  Pillar 3      │
+    │  Morphic       │           │  Consensus     │            │  Entropy       │
+    │  ─────────     │           │  ─────────     │            │  ─────────     │
+    │  Gateway       │           │  ZK Proofs     │            │  Graph Scorer  │
+    │  SQLi Blocker  │           │  Replay Guard  │            │  Embedding     │
+    │  xDS Policy    │           │  PQ Attest.    │            │  SHAP Explain  │
+    │  Gamma Control │           │  3-Tier Gate   │            │  Anomaly Score │
+    └───────┬────────┘           └────────┬───────┘            └────────┬───────┘
+            │                             │                              │
+            └──────────────────┬──────────┘──────────────────────────────
+                               │
+                    ┌──────────▼──────────┐
+                    │   Stability Engine  │
+                    │   ───────────────── │
+                    │   Lyapunov Control  │
+                    │   Guardrail API     │
+                    │   Incident Sink     │
+                    └─────────────────────┘
+```
+
+---
+
+## Four Pillars, One Defense
+
+### 🔷 Pillar 1 — Morphic (Adaptive Gateway)
+The ingress guardian. Every request passes through a **multi-layer security filter** before reaching any service.
+
+| Capability | Detail |
+|---|---|
+| **SQLi Blocker** | 8 regex patterns covering UNION, DROP, comment injection, error-based exfiltration |
+| **Malware Defuser** | 11 signature patterns; dangerous bytes stripped before logging |
+| **xDS Policy Engine** | Dynamic control-plane configuration pushed to Envoy proxies |
+| **Gamma Coupling** | Rate-limits cross-pillar influence to prevent destabilization cascades |
+| **Prometheus Metrics** | Per-reason security block counter exposed at `/metrics` |
+
+### 🔷 Pillar 2 — Consensus (Zero-Knowledge Agreement)
+Nodes reach agreement **without revealing proposal contents** — even under adversarial observation.
+
+| Capability | Detail |
+|---|---|
+| **ZK Proof-of-Possession** | Ed25519 + SHA-256 transcript binding (NIZK-style) |
+| **Replay Guard** | Mutex-protected nonce map prevents replay attacks |
+| **PQ Attestation** | Post-quantum-safe attestation abstraction |
+| **3-Tier Admission** | Nonce → PQ attestation → ZK proof, cheapest checks first |
+
+### 🔷 Pillar 3 — Entropy (AI Anomaly Detection)
+Detects what rules miss — using **graph neural patterns and embedding distance** to catch novel threats.
+
+| Capability | Detail |
+|---|---|
+| **Graph Scoring** | Weisfeiler-Leman style structural comparison |
+| **Embedding Detector** | ONNX-backed vector distance anomaly scoring |
+| **Explainability** | SHAP value attribution for every anomaly decision |
+| **Baseline Tracking** | Rolling normality windows with drift alerting |
+
+### 🔷 Stability Engine (Lyapunov Control Gate)
+The final checkpoint. **No change reaches production** without passing a stability prediction.
+
+| Capability | Detail |
+|---|---|
+| **Predictive Evaluation** | `S(t+1) = S(t) - (γ·0.4) - (d·0.3)` |
+| **Guardrail API** | POST `/evaluate` — approve or block a rollout proposal |
+| **Risk Classification** | Critical / High / Medium / Low bands |
+| **Orchestrator Plans** | `hold`, `stage-rollout`, `freeze-change-and-monitor`, `isolate-and-recover` |
+
+---
+
+## Security Stack
+
+```
+Request ──► SQLi/Malware Filter ──► ZK Admission Gate ──► Stability Guardrail ──► Service
+              │                          │                        │
+           Block + 403             Block + reason           Block + 409
+           Defuse payload          Log nonce replay         Log risk band
+           Increment metric        Verify ZK proof          Return rollout plan
+```
+
+Every blocked request is:
+1. **Defused** — control characters and dangerous symbols stripped before any logging
+2. **Traced** — SHA-256 derived trace ID attached to every deny response
+3. **Measured** — `morphic_security_blocks_total{reason="..."}` incremented in Prometheus
+4. **Alerted** — Prometheus rules fire if block rate exceeds operational thresholds
+
+---
+
+## Quick Start
+
+**Prerequisites:** Go 1.22+, Python 3.11+, Docker, Node.js 20+
+
 ```bash
-cd 88ck-immune-layer
+# Clone and bootstrap
+git clone https://github.com/rock4007/88-ck-all-attack-vectors-blocks-
+cd 88-ck-all-attack-vectors-blocks-/88ck-immune-layer
 ./scripts/bootstrap.sh
 ```
 
-Run core services locally:
+**Run all services with Docker Compose:**
 ```bash
 cd infra
 docker compose up --build
 ```
 
-Run the stability engine directly:
+**Run the Stability Engine standalone:**
 ```bash
 cd stability-engine
 go run ./cmd/engine
+# Listening on :8090
 ```
 
-In another shell, evaluate a rollout proposal:
+**Evaluate a rollout proposal:**
 ```bash
 curl -sS -X POST http://localhost:8090/evaluate \
-	-H 'Content-Type: application/json' \
-	-d '{
-		"proposal_id": "rollout-2026-03-15-a",
-		"current_stability": 0.91,
-		"gamma_delta": 0.04,
-		"disturbance": 0.03
-	}'
+  -H 'Content-Type: application/json' \
+  -d '{
+    "proposal_id": "deploy-v2.1.0",
+    "current_stability": 0.91,
+    "gamma_delta": 0.04,
+    "disturbance": 0.03
+  }' | jq
 ```
 
-Run adversarial scenarios locally:
+**Test the security filter:**
 ```bash
-cd adversarial-harness
-python runner.py --strict
+# This should return 403
+curl -i "http://localhost:8080/tick?q=1'+OR+'1'='1"
+
+# This should return a 200
+curl -i "http://localhost:8080/healthz"
 ```
 
-## Stability Guardrail API
-- GET /healthz
-- POST /evaluate
+---
 
-Decision semantics:
-- 200 OK: proposal approved and rollout may proceed in staged mode.
-- 409 Conflict: proposal blocked due to stability-floor or gamma-step policy breach.
+## Guardrail API Reference
 
-The response includes:
-- current state snapshot.
-- decision object with approved, reason, risk, predicted_stability, coupling_impact.
-- orchestrator plan for hold, stage-rollout, freeze-change-and-monitor, or isolate-and-recover.
+### `POST /evaluate`
 
-## Development workflow
-Run Go tests for the stability engine:
-```bash
-cd stability-engine
-go test ./...
+**Request:**
+```json
+{
+  "proposal_id": "string",
+  "current_stability": 0.0–1.0,
+  "gamma_delta": 0.0–1.0,
+  "disturbance": 0.0–1.0
+}
 ```
 
-Validate coupling coefficient format:
+**Response (approved):** `200 OK`
+```json
+{
+  "decision": {
+    "approved": true,
+    "reason": "stability nominal",
+    "risk": "low",
+    "predicted_stability": 0.88
+  },
+  "orchestrator": { "plan": "stage-rollout" }
+}
+```
+
+**Response (blocked):** `409 Conflict`
+```json
+{
+  "decision": {
+    "approved": false,
+    "reason": "predicted stability below minimum floor",
+    "risk": "critical",
+    "predicted_stability": 0.71
+  },
+  "orchestrator": { "plan": "freeze-change-and-monitor" }
+}
+```
+
+### `GET /healthz`
+Returns `200 ok` when the engine is live.
+
+---
+
+## Observability
+
+**Prometheus metrics exposed:**
+
+| Metric | Type | Description |
+|---|---|---|
+| `morphic_security_blocks_total` | Counter | Blocked requests by reason label |
+| `morphic_security_block_rate_5m` | Recording Rule | 5-minute block rate |
+| `morphic_security_block_rate_critical_5m` | Recording Rule | Critical payload rate |
+| `stability_index` | Gauge | Current Lyapunov stability score |
+
+**Active alerts:**
+
+| Alert | Severity | Condition |
+|---|---|---|
+| `MorphicSecurityBlocksSpike` | warning | Block rate > 0.5/s for 5 minutes |
+| `MorphicCriticalPayloadBlocks` | critical | Critical payload rate > 0.1/s for 3 minutes |
+| `StabilityDegradation` | critical | `stability_index` < 0.80 for 2 minutes |
+
+---
+
+## Repository Layout
+
+```
+88ck-immune-layer/
+├── pillar1-morphic/          # Gateway, SQLi/malware filter, gamma coupling, xDS
+│   ├── cmd/gateway/          # HTTP entrypoint (port 8080)
+│   └── internal/
+│       ├── securityfilter/   # Ingress threat detection + defuser
+│       ├── metrics/          # Prometheus + OTel declarations
+│       ├── gamma/            # Lyapunov coupling controller
+│       ├── scheduler/        # ChaCha20-secured adaptive scheduler
+│       └── xds/              # Envoy control-plane publisher
+│
+├── pillar2-consensus/        # ZK agreement, replay guard, PQ attestation
+│   ├── cmd/consensus/        # Consensus node entrypoint
+│   └── internal/
+│       ├── zkp/              # Ed25519 + SHA-256 proof-of-possession
+│       └── security/         # 3-tier admission gate
+│
+├── pillar3-entropy/          # Python anomaly detection
+│   └── src/
+│       ├── detector.py       # Main detector entrypoint
+│       ├── baseline.py       # Normality baseline tracker
+│       ├── graph_scorer.py   # WL-style graph anomaly scorer
+│       └── explainability.py # SHAP attribution layer
+│
+├── stability-engine/         # Lyapunov guardrail + orchestrator
+│   └── cmd/engine/           # HTTP API (port 8090)
+│
+├── frontend/                 # React + Vite + Tailwind ops UI
+│
+├── adversarial-harness/      # MITRE-style scenario runner
+│
+├── infra/
+│   ├── docker-compose.yml
+│   ├── helm/                 # Kubernetes Helm chart
+│   └── prometheus/           # Alert + recording rules
+│
+├── docs/                     # Architecture, theory, API docs
+└── scripts/                  # Bootstrap and validation utilities
+```
+
+---
+
+## CI / CD Pipelines
+
+| Workflow | Trigger | Purpose |
+|---|---|---|
+| `ci.yml` | Push / PR | Build, test, coverage enforce |
+| `security-scan.yml` | Push / PR | Dependency and secrets scan |
+| `adversarial-test.yml` | Schedule + PR | MITRE scenario regression |
+| `release.yml` | Tag `v*` | Multi-arch image build + push |
+
+---
+
+## Security Baseline
+
+- **Distroless containers** — `gcr.io/distroless/static-debian12:nonroot` for all Go services
+- **No `math/rand`** — all entropy sourced from `crypto/rand`
+- **Post-quantum posture** — PQ-safe attestation abstraction in consensus path
+- **Zero-knowledge proofs** — proposal content never exposed during agreement
+- **Log injection prevention** — all logged payloads pass through the defuser before writing
+- **Replay protection** — nonce map blocks duplicate proposal submissions
+
+---
+
+## Development
+
 ```bash
+# Run all Go tests (pillar2 + stability-engine)
+cd pillar2-consensus && go test ./...
+cd stability-engine && go test ./...
+
+# Run security filter tests
+cd pillar1-morphic && go test ./internal/securityfilter/...
+
+# Validate a coupling coefficient
 ./scripts/validate-coefficients.sh 0.42
+
+# Run adversarial harness
+cd adversarial-harness && python runner.py --strict
 ```
 
-CI pipelines:
-- .github/workflows/ci.yml
-- .github/workflows/security-scan.yml
-- .github/workflows/adversarial-test.yml
-- .github/workflows/release.yml
+---
 
-## Security baseline
-- Distroless runtime images for production containers.
-- No math/rand usage in Go code; entropy comes from crypto/rand.
-- PQ-safe posture preserved through consensus attestation paths.
-- Private adversarial harness code is ignored by default to keep attack-playbook internals out of public commits.
+<div align="center">
 
-## License
-MIT. See LICENSE.
+**Built for systems that cannot afford to fail.**
+
+[![MIT License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](./LICENSE)
+
+</div>

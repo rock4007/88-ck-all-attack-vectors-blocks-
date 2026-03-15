@@ -1,5 +1,14 @@
 # API Surface
 
+## Consensus Admission (internal flow)
+- Proposal admission requires:
+	- PQ-safe attestation (`pqsig:*`).
+	- NIZK-style proof-of-possession transcript bound to proposal statement hash.
+	- Fresh nonce accepted once only (replay-protected).
+- Admission decision outputs:
+	- `allowed` boolean.
+	- `reason` in `{admitted, nonce_required, replay_detected, pq_attestation_failed, zk_proof_invalid}`.
+
 ## Morphic Gateway
 - `GET /healthz` -> liveness status.
 - `GET /tick` -> produce one policy scheduling cycle.

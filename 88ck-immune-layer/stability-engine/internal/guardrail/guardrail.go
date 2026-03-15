@@ -53,9 +53,11 @@ func New(constraint *lyapunov.Constraint, minStability float64, maxGammaStep flo
 
 func (g *Guardrail) Evaluate(req EvaluateRequest) Decision {
 	impact := math.Abs(req.GammaDelta)
+	// Lightweight predictor: current stability minus coupling and disturbance pressure.
 	predicted := req.CurrentStability - (impact * g.gammaWeight) - (req.Disturbance * g.disturbanceWeight)
 	predicted = clamp01(predicted)
 
+	// Hard policy guard: reject abrupt coupling jumps even if current state is healthy.
 	if impact > g.maxGammaStep {
 		return Decision{
 			ProposalID:         req.ProposalID,
@@ -70,6 +72,7 @@ func (g *Guardrail) Evaluate(req EvaluateRequest) Decision {
 
 	stable := predicted >= g.minStability && g.constraint.IsStable(predicted)
 	if !stable {
+		// Soft guard: reject proposals that push predicted state below Lyapunov floor.
 		return Decision{
 			ProposalID:         req.ProposalID,
 			Approved:           false,
@@ -93,6 +96,7 @@ func (g *Guardrail) Evaluate(req EvaluateRequest) Decision {
 }
 
 func classifyRisk(predicted float64, minStability float64) string {
+	// Keep thresholds explicit so on-call engineers can map them to alert severities.
 	if predicted < minStability {
 		return "critical"
 	}

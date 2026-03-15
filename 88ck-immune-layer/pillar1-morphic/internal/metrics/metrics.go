@@ -21,8 +21,8 @@ var (
 	})
 
 	MorphCycleDuration = promauto.NewHistogram(prometheus.HistogramOpts{
-		Name: "morph_cycle_duration_seconds",
-		Help: "Morph cycle execution duration",
+		Name:    "morph_cycle_duration_seconds",
+		Help:    "Morph cycle execution duration",
 		Buckets: []float64{0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1.0},
 	})
 
@@ -57,15 +57,29 @@ var (
 	})
 
 	XDSAckLatencyMs = promauto.NewHistogram(prometheus.HistogramOpts{
-		Name: "xds_ack_latency_ms",
-		Help: "xDS config ACK latency from Envoy (ms)",
+		Name:    "xds_ack_latency_ms",
+		Help:    "xDS config ACK latency from Envoy (ms)",
 		Buckets: prometheus.ExponentialBuckets(50, 2, 5),
 	})
+
+	MorphicSecurityBlocksTotal = promauto.NewCounterVec(prometheus.CounterOpts{
+		Name: "morphic_security_blocks_total",
+		Help: "Total blocked gateway requests by security middleware",
+	}, []string{"reason"})
 )
 
 type Metrics struct {
 	meter  metric.Meter
 	tracer trace.Tracer
+}
+
+// IncSecurityBlock is called by ingress middleware whenever a request is denied.
+// The reason label makes it easy to separate SQLi bursts from malware probes.
+func IncSecurityBlock(reason string) {
+	if reason == "" {
+		reason = "unknown"
+	}
+	MorphicSecurityBlocksTotal.WithLabelValues(reason).Inc()
 }
 
 func NewMetrics(ctx context.Context) *Metrics {

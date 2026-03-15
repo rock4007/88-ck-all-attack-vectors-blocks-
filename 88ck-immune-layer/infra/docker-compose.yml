@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  morphic:
+    build: ../pillar1-morphic
+    ports:
+      - "8080:8080"
+  consensus:
+    build: ../pillar2-consensus
+  entropy:
+    build: ../pillar3-entropy
+  stability:
+    build: ../stability-engine
+  frontend:
+    build: ../frontend
+    ports:
+      - "4173:4173"

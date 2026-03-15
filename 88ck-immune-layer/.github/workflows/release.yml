@@ -1,0 +1,37 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - name: Build Go binaries
+        run: |
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o dist/gateway ./pillar1-morphic/cmd/gateway
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o dist/consensus ./pillar2-consensus/cmd/consensus
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o dist/engine ./stability-engine/cmd/engine
+      - name: Create release notes
+        run: |
+          mkdir -p dist
+          cat > dist/NOTES.md << 'NOTES'
+          88/CK Immune Layer release artifacts.
+          Includes morphic gateway, consensus core, and stability engine binaries.
+          NOTES
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/gateway
+            dist/consensus
+            dist/engine
+            dist/NOTES.md

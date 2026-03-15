@@ -1,0 +1,11 @@
+groups:
+  - name: stability-alerts
+    rules:
+      - alert: StabilityDegradation
+        expr: stability_index < 0.80
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "S(t) dropped below safe threshold"
+          description: "The immune layer may enter unstable regime if no action is taken."

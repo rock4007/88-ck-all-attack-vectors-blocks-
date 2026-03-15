@@ -1,17 +1,17 @@
 package incident
 
 import (
-"log"
+	"log"
 
-"github.com/[username]/88ck-immune-layer/stability-engine/internal/orchestrator"
+	"github.com/88ck/stability-engine/internal/orchestrator"
 )
 
 type Sink struct{}
 
 func NewSink() *Sink {
-return &Sink{}
+	return &Sink{}
 }
 
 func (s *Sink) Emit(plan orchestrator.Plan) {
-log.Printf("incident action=%s", plan.Action)
+	log.Printf("incident action=%s reason=%s", plan.Action, plan.Reason)
 }

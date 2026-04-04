@@ -33,6 +33,34 @@
 
 ---
 
+## For Cybersecurity Recruiters and Hiring Managers
+
+This project is intentionally built as a **job-ready security engineering portfolio**. It demonstrates end-to-end ownership across secure software architecture, implementation, testing, and operations.
+
+### Role alignment
+
+- Security Engineer: threat detection, secure middleware, abuse-case hardening
+- Application Security Engineer: prevention controls for injection and payload-based attacks
+- Cloud Security Engineer: observability, alerting, and containerized deployment patterns
+- Detection Engineer / SOC Engineering: anomaly scoring, explainability, and incident routing
+- Platform Security Engineer: policy-driven controls and safe rollout guardrails
+
+### What this demonstrates to HR and interview panels
+
+- Ability to design defenses that are measurable, testable, and production-oriented
+- Strong systems thinking across Go, Python, infra, and operational telemetry
+- Security-first coding practices including replay resistance and payload defusing
+- Communication quality through architecture, API, and threat-model friendly documentation
+
+### Resume-friendly impact highlights
+
+- Built a multi-pillar defensive platform that blocks malicious ingress before service execution
+- Implemented replay-safe and privacy-preserving admission checks for distributed consensus
+- Added AI-assisted anomaly detection with explainability hooks for incident triage
+- Introduced a stability gate to prevent unsafe rollouts from entering production paths
+
+---
+
 ## Architecture at a Glance
 
 ```

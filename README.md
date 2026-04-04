@@ -1,51 +1,67 @@
 # 88/CK All Attack Vectors Blocks
 
-Security-focused distributed systems project that combines ingress protection, consensus admission hardening, anomaly detection, and rollout guardrails.
+Security-focused distributed systems platform that combines preventive controls, admission hardening, anomaly analytics, and rollout safety governance.
 
-## Change Authority
+## Executive Summary
 
-This repository is owner-controlled. See [AUTHORITY_POLICY.md](AUTHORITY_POLICY.md) for approval and branch-protection policy.
+88/CK is a multi-service reference architecture for modern security engineering. It demonstrates how to enforce controls across the full request lifecycle:
 
-## What's New (April 2026)
+- ingress filtering and payload defusing
+- replay-safe consensus admission
+- anomaly detection with explainability
+- stability-aware rollout decisioning
 
-- Production hardening completed for Docker Compose runtime:
-  - Healthchecks added for morphic, stability-engine, and frontend containers.
-  - Restart policies, resource constraints, and log rotation configured in compose.
-- Supply-chain and build hygiene improvements:
-  - `.dockerignore` added for all service directories.
-  - Root `.gitignore` added for generated and local-only artifacts.
-- Frontend dependency security refresh:
-  - Vite upgraded to `6.4.1`.
-  - `npm audit` now reports 0 vulnerabilities.
-- Deployment readiness validated end-to-end:
-  - `docker compose up --build` completes successfully.
-  - Runtime services report healthy state where expected.
+This repository is designed for engineering validation, portfolio credibility, and deployment-oriented experimentation.
 
-## What This Project Demonstrates
+## Current Status
 
-- Secure backend engineering in Go and Python
-- AppSec controls for SQLi and unsafe payload handling
-- Replay-resistant and staged admission checks in consensus paths
-- Containerized operations with Compose and Helm
-- Security observability and incident-oriented design
+- Readiness: deployment-ready for local and pre-production environments
+- Runtime verification: docker compose build and stack startup validated
+- Container hardening: healthchecks, restart policies, resource limits, and log rotation configured
+- Frontend dependency posture: npm audit clean
 
-## System Overview
+## What Is New (April 2026)
 
-The platform is implemented in [88ck-immune-layer/README.md](88ck-immune-layer/README.md) and organized into four runtime domains:
+- Added container healthchecks to gateway, stability engine, and frontend runtime images.
+- Hardened Compose profile with restart policies, constrained resources, and bounded container logging.
+- Introduced service-level dockerignore coverage to reduce image context and prevent leakage of non-runtime files.
+- Added repository-level gitignore for generated artifacts and local environment noise.
+- Upgraded frontend toolchain dependencies and verified clean audit output.
 
-1. `pillar1-morphic`: ingress gateway and adaptive security filtering
-2. `pillar2-consensus`: replay-safe and proof-oriented admission
-3. `pillar3-entropy`: anomaly detection and explainability pipeline
-4. `stability-engine`: Lyapunov-inspired rollout safety and orchestration
+## Architecture Domains
+
+Primary implementation lives in [88ck-immune-layer/README.md](88ck-immune-layer/README.md).
+
+1. Pillar 1 Morphic: ingress gateway and adaptive threat filtering
+2. Pillar 2 Consensus: replay resistance and proof-oriented admission
+3. Pillar 3 Entropy: anomaly detection and explainability pipeline
+4. Stability Engine: Lyapunov-inspired rollout guardrail and orchestration logic
+
+## Security Control Coverage
+
+| Layer | Control Objective | Representative Implementation |
+|---|---|---|
+| Ingress | Block high-confidence malicious input | SQLi and payload signature filtering in Morphic |
+| Admission | Reject replay and unverifiable proposals | Staged nonce and proof checks in Consensus |
+| Detection | Surface anomalous behavior patterns | Baseline plus graph and embedding analytics in Entropy |
+| Governance | Prevent destabilizing change rollout | Stability scoring and action plans in Stability Engine |
+
+## Operational Readiness
+
+- Containerization: multi-service Docker builds with distroless runtime where applicable
+- Local orchestration: [88ck-immune-layer/infra/docker-compose.yml](88ck-immune-layer/infra/docker-compose.yml)
+- Kubernetes path: [88ck-immune-layer/infra/helm/88ck](88ck-immune-layer/infra/helm/88ck)
+- Security automation: root workflows in [.github/workflows](.github/workflows)
+- Documentation set: architecture, theory, API, and coupling analysis in [88ck-immune-layer/docs](88ck-immune-layer/docs)
 
 ## Quick Start
 
 ### Prerequisites
 
-- Go 1.25+
-- Python 3.11+
-- Node.js 20+
-- Docker + Docker Compose
+- Go 1.25 or newer
+- Python 3.11 or newer
+- Node.js 20 or newer
+- Docker and Docker Compose
 
 ### Bootstrap
 
@@ -62,28 +78,17 @@ cd infra
 docker compose up --build
 ```
 
-## Validation Commands
+## Validation Runbook
 
-Run from `88ck-immune-layer` unless noted.
+Execute from 88ck-immune-layer unless noted.
 
 ```bash
-# Go tests (example modules)
 cd pillar1-morphic && go test ./...
 cd ../pillar2-consensus && go test ./...
 cd ../stability-engine && go test ./...
-
-# Python harness
 cd ../adversarial-harness && python runner.py --strict
-
-# Frontend build
 cd ../frontend && npm run build
 ```
-
-## Deployment Paths
-
-- Local and pre-production: `infra/docker-compose.yml`
-- Kubernetes: Helm chart in `infra/helm/88ck`
-- CI/CD and release automation: root `.github/workflows/`
 
 ## Repository Structure
 
@@ -103,24 +108,19 @@ cd ../frontend && npm run build
     └── stability-engine/
 ```
 
-## Role Fit
+## Engineering Portfolio Value
 
-This project aligns well with:
+This codebase maps directly to roles that require practical security depth:
 
 - Security Engineer
 - Application Security Engineer
 - Platform Security Engineer
-- Detection Engineer / SOC Engineer
+- Detection Engineer or SOC Engineer
 - Cloud Security Engineer
 
-## Documentation
+## Governance
 
-Technical docs are in `88ck-immune-layer/docs/`:
-
-- `architecture.md`
-- `api.md`
-- `theory.md`
-- `coupling-problem.md`
+This repository is owner-controlled. Approval and branch policy are documented in [AUTHORITY_POLICY.md](AUTHORITY_POLICY.md).
 
 ## License
 

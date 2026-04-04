@@ -1,103 +1,42 @@
 # 88/CK All Attack Vectors Blocks
 
-Security-focused distributed systems project with adaptive filtering, consensus hardening, anomaly detection, and rollout guardrails.
+Security-focused distributed systems project that combines ingress protection, consensus admission hardening, anomaly detection, and rollout guardrails.
 
 ## Change Authority
 
-This repository is owner-controlled. See [AUTHORITY_POLICY.md](AUTHORITY_POLICY.md) for the exact approval and branch-protection rules.
+This repository is owner-controlled. See [AUTHORITY_POLICY.md](AUTHORITY_POLICY.md) for approval and branch-protection policy.
 
-## Hiring Snapshot
+## What's New (April 2026)
 
-This repository can be used as a cybersecurity engineering portfolio. It demonstrates:
+- Production hardening completed for Docker Compose runtime:
+  - Healthchecks added for morphic, stability-engine, and frontend containers.
+  - Restart policies, resource constraints, and log rotation configured in compose.
+- Supply-chain and build hygiene improvements:
+  - `.dockerignore` added for all service directories.
+  - Root `.gitignore` added for generated and local-only artifacts.
+- Frontend dependency security refresh:
+  - Vite upgraded to `6.4.1`.
+  - `npm audit` now reports 0 vulnerabilities.
+- Deployment readiness validated end-to-end:
+  - `docker compose up --build` completes successfully.
+  - Runtime services report healthy state where expected.
+
+## What This Project Demonstrates
 
 - Secure backend engineering in Go and Python
-- Practical AppSec controls (injection blocking, payload defusing, replay resistance)
-- Distributed system security patterns (admission gates, consensus hardening)
-- Cloud-native operations (Docker, Compose, Helm, Prometheus)
+- AppSec controls for SQLi and unsafe payload handling
+- Replay-resistant and staged admission checks in consensus paths
+- Containerized operations with Compose and Helm
 - Security observability and incident-oriented design
 
-Relevant roles:
+## System Overview
 
-- Security Engineer
-- Application Security Engineer
-- Platform Security Engineer
-- Detection Engineer / SOC Engineer
-- Cloud Security Engineer
+The platform is implemented in [88ck-immune-layer/README.md](88ck-immune-layer/README.md) and organized into four runtime domains:
 
-## Repository Overview
-
-This repository contains the full 88/CK platform as a monorepo. The core implementation is in [88ck-immune-layer](88ck-immune-layer/README.md), with four cooperating runtime domains:
-
-1. pillar1-morphic: ingress gateway and adaptive security filter
-2. pillar2-consensus: replay-safe and zero-knowledge oriented admission and consensus security
-3. pillar3-entropy: anomaly detection and explainability pipeline (Python)
-4. stability-engine: Lyapunov-inspired rollout guardrail and orchestrator
-
-## One-by-One Breakdown
-
-### 1. What this project is
-
-88/CK is a cybersecurity-focused distributed systems project. The goal is to block attacks early, protect consensus traffic, detect abnormal behavior, and stop risky changes before they impact production.
-
-### 2. Pillar 1: Morphic (gateway security)
-
-This is the first control point for incoming traffic. Requests are inspected for suspicious patterns such as SQL injection and dangerous payload signatures. Unsafe requests are blocked before they reach internal services.
-
-### 3. Pillar 2: Consensus (secure admission and verification)
-
-This layer hardens distributed coordination. It applies staged admission checks, including replay protection and proof verification, so duplicated or untrusted proposals are rejected.
-
-### 4. Pillar 3: Entropy (anomaly detection)
-
-This component handles behavior-based detection. It uses scoring and explainability-oriented modules to identify activity that deviates from expected system behavior.
-
-### 5. Stability Engine (rollout safety)
-
-This service evaluates rollout risk before a change proceeds. If predicted stability risk is too high, the system can recommend holding, freezing, or isolating rollout activity.
-
-### 6. Adversarial harness
-
-The harness runs adversarial scenarios to validate whether controls hold under pressure. It helps verify that the system works not only in normal operation but also against realistic attack paths.
-
-### 7. Infra and operations
-
-Docker, Compose, Helm, and Prometheus assets support deployment and observability. This makes the platform easier to run in development and easier to monitor in test environments.
-
-### 8. Frontend
-
-The frontend provides an operator-facing interface for platform workflows and visibility, complementing the service-side APIs.
-
-### 9. Why this matters for hiring
-
-The repository demonstrates practical security engineering work across secure coding, detection, distributed systems hardening, testing, and operational telemetry.
-
-### 10. Role fit
-
-This project aligns well with:
-
-- Security Engineer
-- Application Security Engineer
-- Platform Security Engineer
-- Detection Engineer / SOC Engineer
-- Cloud Security Engineer
-
-## Project Structure
-
-```text
-88-ck-all-attack-vectors-blocks-/
-├── README.md
-└── 88ck-immune-layer/
-	├── go.work
-	├── adversarial-harness/
-	├── docs/
-	├── frontend/
-	├── infra/
-	├── pillar1-morphic/
-	├── pillar2-consensus/
-	├── pillar3-entropy/
-	├── scripts/
-	└── stability-engine/
-```
+1. `pillar1-morphic`: ingress gateway and adaptive security filtering
+2. `pillar2-consensus`: replay-safe and proof-oriented admission
+3. `pillar3-entropy`: anomaly detection and explainability pipeline
+4. `stability-engine`: Lyapunov-inspired rollout safety and orchestration
 
 ## Quick Start
 
@@ -116,105 +55,72 @@ cd 88-ck-all-attack-vectors-blocks-/88ck-immune-layer
 ./scripts/bootstrap.sh
 ```
 
-### Run with Docker Compose
+### Run Full Stack
 
 ```bash
 cd infra
 docker compose up --build
 ```
 
-## Development Commands
+## Validation Commands
 
-Run these from 88ck-immune-layer unless noted otherwise.
+Run from `88ck-immune-layer` unless noted.
 
 ```bash
-# Go tests for Pillar 2
-cd pillar2-consensus && go test ./...
-
-# Go tests for stability engine
+# Go tests (example modules)
+cd pillar1-morphic && go test ./...
+cd ../pillar2-consensus && go test ./...
 cd ../stability-engine && go test ./...
 
-# Security filter tests
-cd ../pillar1-morphic && go test ./internal/securityfilter/...
-
-# Adversarial harness
+# Python harness
 cd ../adversarial-harness && python runner.py --strict
+
+# Frontend build
+cd ../frontend && npm run build
 ```
 
-## Repository Layout
+## Deployment Paths
+
+- Local and pre-production: `infra/docker-compose.yml`
+- Kubernetes: Helm chart in `infra/helm/88ck`
+- CI/CD and release automation: root `.github/workflows/`
+
+## Repository Structure
 
 ```text
-88ck-immune-layer/
-├── pillar1-morphic/          # Gateway, SQLi/malware filter, gamma coupling, xDS
-│   ├── cmd/gateway/          # HTTP entrypoint (port 8080)
-│   └── internal/
-│       ├── securityfilter/   # Ingress threat detection + defuser
-│       ├── metrics/          # Prometheus + OTel declarations
-│       ├── gamma/            # Lyapunov coupling controller
-│       ├── scheduler/        # Bounded score scheduler
-│       └── xds/              # In-process xDS publisher stub
-│
-├── pillar2-consensus/        # ZK agreement, replay guard, PQ attestation
-│   ├── cmd/consensus/        # Consensus node entrypoint
-│   └── internal/
-│       ├── zkp/              # Ed25519 + SHA-256 proof-of-possession
-│       └── security/         # 3-tier admission gate
-│
-├── pillar3-entropy/          # Python anomaly detection
-│   ├── cmd/detector/         # Detector entrypoint
-│   └── internal/
-│       ├── baseline/         # Baseline tracker
-│       ├── embedding/        # Embedding-based scoring
-│       ├── explainability/   # SHAP layer
-│       └── graph/            # WL-style graph scorer
-│
-├── stability-engine/         # Lyapunov guardrail + orchestrator
-│   └── cmd/engine/           # HTTP API (port 8090)
-│
-├── frontend/                 # React + Vite + Tailwind ops UI
-│
-├── adversarial-harness/      # MITRE-style scenario runner
-│
-├── infra/
-│   ├── docker-compose.yml
-│   ├── helm/                 # Kubernetes Helm chart
-│   └── prometheus/           # Alert + recording rules
-│
-├── docs/                     # Architecture, theory, API docs
-└── scripts/                  # Bootstrap and validation utilities
+88-ck-all-attack-vectors-blocks-/
+├── README.md
+└── 88ck-immune-layer/
+    ├── go.work
+    ├── adversarial-harness/
+    ├── docs/
+    ├── frontend/
+    ├── infra/
+    ├── pillar1-morphic/
+    ├── pillar2-consensus/
+    ├── pillar3-entropy/
+    ├── scripts/
+    └── stability-engine/
 ```
 
----
+## Role Fit
 
-## CI / CD Pipelines
+This project aligns well with:
 
-| Workflow | Trigger | Purpose |
-|---|---|---|
-| `ci.yml` | Push / PR | Build, test, coverage enforce |
-| `security-scan.yml` | Push / PR | Dependency and secrets scan |
-| `adversarial-test.yml` | Schedule + PR | MITRE scenario regression |
-| `release.yml` | Tag `v*` | Multi-arch image build + push |
-
----
-
-## Current Scope Notes
-
-- This is an engineering project and learning platform, not a turnkey commercial product.
-- Some controls are simplified prototypes intended to show design approach and integration patterns.
-- Use the docs and tests in each component to understand current behavior and limitations.
+- Security Engineer
+- Application Security Engineer
+- Platform Security Engineer
+- Detection Engineer / SOC Engineer
+- Cloud Security Engineer
 
 ## Documentation
 
-Technical docs live in `88ck-immune-layer/docs/`:
+Technical docs are in `88ck-immune-layer/docs/`:
 
-- architecture.md
-- api.md
-- theory.md
-- coupling-problem.md
-
-For full implementation details and service-level information, start with:
-
-- [88ck-immune-layer/README.md](88ck-immune-layer/README.md)
+- `architecture.md`
+- `api.md`
+- `theory.md`
+- `coupling-problem.md`
 
 ## License
 

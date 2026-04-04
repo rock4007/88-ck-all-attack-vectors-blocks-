@@ -1,42 +1,155 @@
-# 88-ck-all-attack-vectors-blocks-
+# 88/CK All Attack Vectors Blocks
 
-# 88/CK Immune Layer
+Security-focused distributed systems project with adaptive filtering, consensus hardening, anomaly detection, and rollout guardrails.
 
-[![S(t) live](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatus.example.com%2F88ck%2Fstability.json)](https://status.example.com/88ck)
-[![Build](https://img.shields.io/github/actions/workflow/status/rock4007/88-ck-all-attack-vectors-blocks-/ci.yml?branch=main)](./.github/workflows/ci.yml)
-[![Coverage](https://img.shields.io/badge/coverage-enforced-brightgreen)](./.github/workflows/ci.yml)
-[![arXiv](https://img.shields.io/badge/arXiv-2401.88088-b31b1b.svg)](https://arxiv.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+## Hiring Snapshot
 
-88/CK Immune Layer is a multi-pillar defensive monorepo combining adaptive policy control, consensus integrity, graph/embedding anomaly detection, and Lyapunov-constrained stability orchestration.
+This repository can be used as a cybersecurity engineering portfolio. It demonstrates:
 
-## Repository layout
-- `pillar1-morphic`: adaptive scheduler and xDS gateway.
-- `pillar2-consensus`: HotStuff-inspired control plane with PQ-safe attestation abstraction.
-- `pillar3-entropy`: anomaly detection, graph scoring, and explainability components.
-- `stability-engine`: system-level stability and incident control loop.
-- `frontend`: operational dashboard.
-- `infra`: Helm, compose, and Prometheus artifacts.
+- Secure backend engineering in Go and Python
+- Practical AppSec controls (injection blocking, payload defusing, replay resistance)
+- Distributed system security patterns (admission gates, consensus hardening)
+- Cloud-native operations (Docker, Compose, Helm, Prometheus)
+- Security observability and incident-oriented design
 
-## Quick start
+Relevant roles:
+
+- Security Engineer
+- Application Security Engineer
+- Platform Security Engineer
+- Detection Engineer / SOC Engineer
+- Cloud Security Engineer
+
+## Repository Overview
+
+This repository contains the full 88/CK platform as a monorepo. The core implementation is in [88ck-immune-layer](88ck-immune-layer/README.md), with four cooperating runtime domains:
+
+1. pillar1-morphic: ingress gateway and adaptive security filter
+2. pillar2-consensus: replay-safe and zero-knowledge oriented admission and consensus security
+3. pillar3-entropy: anomaly detection and explainability pipeline (Python)
+4. stability-engine: Lyapunov-inspired rollout guardrail and orchestrator
+
+## One-by-One Breakdown
+
+### 1. What this project is
+
+88/CK is a cybersecurity-focused distributed systems project. The goal is to block attacks early, protect consensus traffic, detect abnormal behavior, and stop risky changes before they impact production.
+
+### 2. Pillar 1: Morphic (gateway security)
+
+This is the first control point for incoming traffic. Requests are inspected for suspicious patterns such as SQL injection and dangerous payload signatures. Unsafe requests are blocked before they reach internal services.
+
+### 3. Pillar 2: Consensus (secure admission and verification)
+
+This layer hardens distributed coordination. It applies staged admission checks, including replay protection and proof verification, so duplicated or untrusted proposals are rejected.
+
+### 4. Pillar 3: Entropy (anomaly detection)
+
+This component handles behavior-based detection. It uses scoring and explainability-oriented modules to identify activity that deviates from expected system behavior.
+
+### 5. Stability Engine (rollout safety)
+
+This service evaluates rollout risk before a change proceeds. If predicted stability risk is too high, the system can recommend holding, freezing, or isolating rollout activity.
+
+### 6. Adversarial harness
+
+The harness runs adversarial scenarios to validate whether controls hold under pressure. It helps verify that the system works not only in normal operation but also against realistic attack paths.
+
+### 7. Infra and operations
+
+Docker, Compose, Helm, and Prometheus assets support deployment and observability. This makes the platform easier to run in development and easier to monitor in test environments.
+
+### 8. Frontend
+
+The frontend provides an operator-facing interface for platform workflows and visibility, complementing the service-side APIs.
+
+### 9. Why this matters for hiring
+
+The repository demonstrates practical security engineering work across secure coding, detection, distributed systems hardening, testing, and operational telemetry.
+
+### 10. Role fit
+
+This project aligns well with:
+
+- Security Engineer
+- Application Security Engineer
+- Platform Security Engineer
+- Detection Engineer / SOC Engineer
+- Cloud Security Engineer
+
+## Project Structure
+
+```text
+88-ck-all-attack-vectors-blocks-/
+├── README.md
+└── 88ck-immune-layer/
+	├── go.work
+	├── adversarial-harness/
+	├── docs/
+	├── frontend/
+	├── infra/
+	├── pillar1-morphic/
+	├── pillar2-consensus/
+	├── pillar3-entropy/
+	├── scripts/
+	└── stability-engine/
+```
+
+## Quick Start
+
+### Prerequisites
+
+- Go 1.22+
+- Python 3.11+
+- Node.js 20+
+- Docker + Docker Compose
+
+### Bootstrap
+
 ```bash
-cd 88ck-immune-layer
+git clone https://github.com/rock4007/88-ck-all-attack-vectors-blocks-.git
+cd 88-ck-all-attack-vectors-blocks-/88ck-immune-layer
 ./scripts/bootstrap.sh
 ```
 
-Run services locally:
+### Run with Docker Compose
+
 ```bash
 cd infra
 docker compose up --build
 ```
 
-Run adversarial scenarios:
+## Development Commands
+
+Run these from 88ck-immune-layer unless noted otherwise.
+
 ```bash
-cd adversarial-harness
-python runner.py --strict
+# Go tests for Pillar 2
+cd pillar2-consensus && go test ./...
+
+# Go tests for stability engine
+cd ../stability-engine && go test ./...
+
+# Security filter tests
+cd ../pillar1-morphic && go test ./internal/securityfilter/...
+
+# Adversarial harness
+cd ../adversarial-harness && python runner.py --strict
 ```
 
-## Security baseline
-- Distroless runtime images for all production Dockerfiles.
-- No `math/rand` usage in Go code; entropy comes from `crypto/rand`.
-- PQ-safe posture preserved through consensus attestation paths.
+## Documentation
+
+Technical docs live in `88ck-immune-layer/docs/`:
+
+- architecture.md
+- api.md
+- theory.md
+- coupling-problem.md
+
+For full implementation details and service-level information, start with:
+
+- [88ck-immune-layer/README.md](88ck-immune-layer/README.md)
+
+## License
+
+MIT. See [88ck-immune-layer/LICENSE](88ck-immune-layer/LICENSE).

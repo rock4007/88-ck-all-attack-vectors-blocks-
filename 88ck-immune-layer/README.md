@@ -325,6 +325,21 @@ Returns `200 ok` when the engine is live.
 
 ---
 
+## Validation Status
+
+Latest industry-style validation report:
+- [Industry Validation Report](./docs/industry-validation-report.md)
+
+Validated gates include:
+- Go static analysis + race tests
+- Frontend production build
+- Python compile and import smoke checks
+- Security scans (`gosec`, `bandit`)
+- Supply-chain SBOM generation (CycloneDX)
+- Containerized integration and adversarial regression tests
+
+---
+
 ## Current Scope Notes
 
 - This is an engineering project and learning platform, not a turnkey commercial product.

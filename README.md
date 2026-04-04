@@ -29,6 +29,54 @@ This repository contains the full 88/CK platform as a monorepo. The core impleme
 3. pillar3-entropy: anomaly detection and explainability pipeline (Python)
 4. stability-engine: Lyapunov-inspired rollout guardrail and orchestrator
 
+## One-by-One Breakdown
+
+### 1. What this project is
+
+88/CK is a cybersecurity-focused distributed systems project. The goal is to block attacks early, protect consensus traffic, detect abnormal behavior, and stop risky changes before they impact production.
+
+### 2. Pillar 1: Morphic (gateway security)
+
+This is the first control point for incoming traffic. Requests are inspected for suspicious patterns such as SQL injection and dangerous payload signatures. Unsafe requests are blocked before they reach internal services.
+
+### 3. Pillar 2: Consensus (secure admission and verification)
+
+This layer hardens distributed coordination. It applies staged admission checks, including replay protection and proof verification, so duplicated or untrusted proposals are rejected.
+
+### 4. Pillar 3: Entropy (anomaly detection)
+
+This component handles behavior-based detection. It uses scoring and explainability-oriented modules to identify activity that deviates from expected system behavior.
+
+### 5. Stability Engine (rollout safety)
+
+This service evaluates rollout risk before a change proceeds. If predicted stability risk is too high, the system can recommend holding, freezing, or isolating rollout activity.
+
+### 6. Adversarial harness
+
+The harness runs adversarial scenarios to validate whether controls hold under pressure. It helps verify that the system works not only in normal operation but also against realistic attack paths.
+
+### 7. Infra and operations
+
+Docker, Compose, Helm, and Prometheus assets support deployment and observability. This makes the platform easier to run in development and easier to monitor in test environments.
+
+### 8. Frontend
+
+The frontend provides an operator-facing interface for platform workflows and visibility, complementing the service-side APIs.
+
+### 9. Why this matters for hiring
+
+The repository demonstrates practical security engineering work across secure coding, detection, distributed systems hardening, testing, and operational telemetry.
+
+### 10. Role fit
+
+This project aligns well with:
+
+- Security Engineer
+- Application Security Engineer
+- Platform Security Engineer
+- Detection Engineer / SOC Engineer
+- Cloud Security Engineer
+
 ## Project Structure
 
 ```text

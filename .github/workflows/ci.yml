@@ -57,3 +57,29 @@ jobs:
         run: |
           npm install
           npm run build
+
+  helm-validate:
+    name: Helm chart validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/setup-helm@v4
+
+      - name: Lint and render chart
+        working-directory: 88ck-immune-layer/infra/helm/88ck
+        run: |
+          helm lint .
+          helm template 88ck . >/tmp/88ck-rendered.yaml
+
+  compose-validate:
+    name: Docker Compose validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate compose manifests
+        working-directory: 88ck-immune-layer/infra
+        run: |
+          docker compose config -q
+          docker compose -f docker-compose.adversarial.yml config -q

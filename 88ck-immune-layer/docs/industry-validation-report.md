@@ -2,7 +2,8 @@
 
 Date: 2026-04-04  
 Repository: rock4007/88-ck-all-attack-vectors-blocks-  
-Commit under test: 41c4e47
+Validation baseline commit: 41c4e47  
+Deployment hardening updated through current `main`
 
 ## Scope
 
@@ -76,6 +77,24 @@ Validation executed across all pillars using an industry-style gate sequence:
   - Result: PASS (exit code 0)
   - ATT&CK scenarios T1078, T1119, T1195, T1550 all detected
 
+### 7) Deployment-readiness hardening
+
+- Helm chart validation:
+  - `helm lint .` -> PASS
+  - `helm template 88ck .` -> PASS
+- Helm chart improvements applied:
+  - Valid Kubernetes resource naming even when the Helm release name starts with a digit
+  - Standard labels and selector labels
+  - Dedicated ServiceAccount with token automount disabled
+  - Pod and container security contexts for non-root runtime, dropped capabilities, and read-only root filesystem
+  - Readiness and liveness probes on `/healthz`
+  - RollingUpdate deployment strategy with bounded surge/unavailable values
+  - Optional ingress, image pull secrets, node selectors, affinity, and tolerations
+- CI/CD deployment controls applied:
+  - CI now validates Helm rendering and Docker Compose manifests on every push/PR
+  - Release workflow now builds and publishes OCI images to GHCR for all five services
+  - Release workflow packages the Helm chart and uploads rendered manifests as release assets
+
 ## Finding And Resolution During Validation
 
 - Finding: `gosec` flagged `G706` (log injection) in `pillar1-morphic/internal/securityfilter/middleware.go`.
@@ -89,10 +108,12 @@ Validation executed across all pillars using an industry-style gate sequence:
 
 ## Recommendation
 
-Current state is release-candidate quality for this monorepo baseline:
+Current state is deployment-ready for a standard GHCR + Helm release flow, with the following validated baseline:
 
 - Tests green
 - Builds green
 - Security scans green
 - SBOM generation operational
 - Container and adversarial validations green
+- Helm chart renders cleanly with production-oriented defaults
+- Release pipeline prepared to publish OCI images and chart artifacts

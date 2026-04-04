@@ -1,12 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: 88ck-gateway
+  name: {{ include "immune-layer.fullname" . }}
+  labels:
+    {{- include "immune-layer.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   selector:
-    app.kubernetes.io/name: 88ck-gateway
+    {{- include "immune-layer.selectorLabels" . | nindent 4 }}
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: {{ .Values.service.port }}
-      targetPort: 8080
+      targetPort: http

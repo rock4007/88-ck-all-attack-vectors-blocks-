@@ -4,7 +4,7 @@
 
 # 88/CK Immune Layer
 
-**Autonomous defense infrastructure for distributed systems at scale.**
+**A practical security and resilience stack for distributed systems.**
 
 [![Build](https://img.shields.io/github/actions/workflow/status/rock4007/88-ck-all-attack-vectors-blocks-/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/rock4007/88-ck-all-attack-vectors-blocks-/actions)
 [![Security Scan](https://img.shields.io/github/actions/workflow/status/rock4007/88-ck-all-attack-vectors-blocks-/security-scan.yml?branch=main&style=flat-square&label=Security%20Scan&color=green)](https://github.com/rock4007/88-ck-all-attack-vectors-blocks-/actions)
@@ -15,7 +15,7 @@
 
 <br/>
 
-> *Stop attacks before they happen. Block instability before it spreads. Defend every layer — automatically.*
+> A hands-on reference implementation for secure ingress, resilient consensus, anomaly detection, and guarded rollouts.
 
 </div>
 
@@ -23,19 +23,19 @@
 
 ## What is 88/CK Immune Layer?
 
-88/CK Immune Layer is a **production-grade, multi-pillar security and resilience platform** designed to protect distributed systems from the ground up. It combines:
+88/CK Immune Layer is a multi-service project that explores how security controls can be combined across the request path, consensus path, and rollout path. It includes:
 
-- 🧠 **Adaptive policy control** that morphs to attack patterns in real time
-- 🔐 **Zero-knowledge consensus** so nodes agree without revealing state
-- 🕵️ **AI-powered anomaly detection** with graph and embedding analysis
-- ⚖️ **Lyapunov-constrained orchestration** that mathematically prevents destabilizing changes
-- 🛡️ **Ingress threat neutralization** — SQL injection, malware payloads, command injection — blocked and defused at the gate
+- Adaptive policy controls for ingress handling
+- Zero-knowledge oriented admission checks for consensus traffic
+- AI-supported anomaly detection with explainability components
+- Lyapunov-inspired rollout guardrails for stability checks
+- Ingress filtering and payload defusing for common attack classes
 
 ---
 
 ## For Cybersecurity Recruiters and Hiring Managers
 
-This project is intentionally built as a **job-ready security engineering portfolio**. It demonstrates end-to-end ownership across secure software architecture, implementation, testing, and operations.
+This project is structured as a job-ready security engineering portfolio. It shows end-to-end ownership across architecture, implementation, testing, and operations.
 
 ### Role alignment
 
@@ -47,17 +47,17 @@ This project is intentionally built as a **job-ready security engineering portfo
 
 ### What this demonstrates to HR and interview panels
 
-- Ability to design defenses that are measurable, testable, and production-oriented
-- Strong systems thinking across Go, Python, infra, and operational telemetry
-- Security-first coding practices including replay resistance and payload defusing
-- Communication quality through architecture, API, and threat-model friendly documentation
+- Ability to build controls that are measurable and testable
+- Systems thinking across Go, Python, infrastructure, and telemetry
+- Security-focused coding practices including replay resistance and payload defusing
+- Clear technical communication in architecture and API documentation
 
 ### Resume-friendly impact highlights
 
-- Built a multi-pillar defensive platform that blocks malicious ingress before service execution
-- Implemented replay-safe and privacy-preserving admission checks for distributed consensus
-- Added AI-assisted anomaly detection with explainability hooks for incident triage
-- Introduced a stability gate to prevent unsafe rollouts from entering production paths
+- Built a multi-service platform that blocks malicious ingress before service execution
+- Implemented replay-safe admission checks in the consensus path
+- Added anomaly detection and explainability hooks for incident triage
+- Introduced a stability gate to reduce unsafe rollout risk
 
 ---
 
@@ -93,10 +93,10 @@ This project is intentionally built as a **job-ready security engineering portfo
 
 ---
 
-## Four Pillars, One Defense
+## Components
 
-### 🔷 Pillar 1 — Morphic (Adaptive Gateway)
-The ingress guardian. Every request passes through a **multi-layer security filter** before reaching any service.
+### Pillar 1: Morphic (Adaptive Gateway)
+Ingress requests pass through a layered security filter before reaching downstream services.
 
 | Capability | Detail |
 |---|---|
@@ -106,8 +106,8 @@ The ingress guardian. Every request passes through a **multi-layer security filt
 | **Gamma Coupling** | Rate-limits cross-pillar influence to prevent destabilization cascades |
 | **Prometheus Metrics** | Per-reason security block counter exposed at `/metrics` |
 
-### 🔷 Pillar 2 — Consensus (Zero-Knowledge Agreement)
-Nodes reach agreement **without revealing proposal contents** — even under adversarial observation.
+### Pillar 2: Consensus (Admission and Proof Path)
+Consensus admission combines replay checks, attestation, and proof verification in a staged flow.
 
 | Capability | Detail |
 |---|---|
@@ -116,8 +116,8 @@ Nodes reach agreement **without revealing proposal contents** — even under adv
 | **PQ Attestation** | Post-quantum-safe attestation abstraction |
 | **3-Tier Admission** | Nonce → PQ attestation → ZK proof, cheapest checks first |
 
-### 🔷 Pillar 3 — Entropy (AI Anomaly Detection)
-Detects what rules miss — using **graph neural patterns and embedding distance** to catch novel threats.
+### Pillar 3: Entropy (Anomaly Detection)
+Entropy focuses on structural and embedding-based anomaly detection with explainability support.
 
 | Capability | Detail |
 |---|---|
@@ -126,8 +126,8 @@ Detects what rules miss — using **graph neural patterns and embedding distance
 | **Explainability** | SHAP value attribution for every anomaly decision |
 | **Baseline Tracking** | Rolling normality windows with drift alerting |
 
-### 🔷 Stability Engine (Lyapunov Control Gate)
-The final checkpoint. **No change reaches production** without passing a stability prediction.
+### Stability Engine (Rollout Guardrail)
+The stability engine evaluates rollout risk before a change is approved.
 
 | Capability | Detail |
 |---|---|
@@ -148,11 +148,11 @@ Request ──► SQLi/Malware Filter ──► ZK Admission Gate ──► Stab
            Increment metric        Verify ZK proof          Return rollout plan
 ```
 
-Every blocked request is:
-1. **Defused** — control characters and dangerous symbols stripped before any logging
-2. **Traced** — SHA-256 derived trace ID attached to every deny response
-3. **Measured** — `morphic_security_blocks_total{reason="..."}` incremented in Prometheus
-4. **Alerted** — Prometheus rules fire if block rate exceeds operational thresholds
+For blocked requests, the system applies:
+1. Defusing of control characters and dangerous symbols before logging
+2. Trace identifier generation for deny responses
+3. Prometheus metric updates via `morphic_security_blocks_total{reason="..."}`
+4. Alerting through configured Prometheus rules
 
 ---
 
@@ -289,11 +289,12 @@ Returns `200 ok` when the engine is live.
 │       └── security/         # 3-tier admission gate
 │
 ├── pillar3-entropy/          # Python anomaly detection
-│   └── src/
-│       ├── detector.py       # Main detector entrypoint
-│       ├── baseline.py       # Normality baseline tracker
-│       ├── graph_scorer.py   # WL-style graph anomaly scorer
-│       └── explainability.py # SHAP attribution layer
+│   ├── cmd/detector/         # Detector entrypoint
+│   └── internal/
+│       ├── baseline/         # Baseline tracker
+│       ├── embedding/        # Embedding-based scoring
+│       ├── explainability/   # SHAP layer
+│       └── graph/            # WL-style graph scorer
 │
 ├── stability-engine/         # Lyapunov guardrail + orchestrator
 │   └── cmd/engine/           # HTTP API (port 8090)
@@ -321,6 +322,14 @@ Returns `200 ok` when the engine is live.
 | `security-scan.yml` | Push / PR | Dependency and secrets scan |
 | `adversarial-test.yml` | Schedule + PR | MITRE scenario regression |
 | `release.yml` | Tag `v*` | Multi-arch image build + push |
+
+---
+
+## Current Scope Notes
+
+- This is an engineering project and learning platform, not a turnkey commercial product.
+- Some controls are simplified prototypes intended to show design approach and integration patterns.
+- Use the docs and tests in each component to understand current behavior and limitations.
 
 ---
 
@@ -354,10 +363,4 @@ cd adversarial-harness && python runner.py --strict
 
 ---
 
-<div align="center">
-
-**Built for systems that cannot afford to fail.**
-
-[![MIT License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](./LICENSE)
-
-</div>
+MIT. See [LICENSE](./LICENSE).

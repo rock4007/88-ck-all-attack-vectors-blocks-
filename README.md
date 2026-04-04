@@ -1,10 +1,10 @@
 # 88/CK All Attack Vectors Blocks
 
-Defense-first distributed systems stack with adaptive filtering, zero-knowledge consensus, anomaly detection, and stability guardrails.
+Security-focused distributed systems project with adaptive filtering, consensus hardening, anomaly detection, and rollout guardrails.
 
 ## Hiring Snapshot
 
-This repository is positioned as a cybersecurity engineering portfolio that demonstrates:
+This repository can be used as a cybersecurity engineering portfolio. It demonstrates:
 
 - Secure backend engineering in Go and Python
 - Practical AppSec controls (injection blocking, payload defusing, replay resistance)
@@ -12,7 +12,7 @@ This repository is positioned as a cybersecurity engineering portfolio that demo
 - Cloud-native operations (Docker, Compose, Helm, Prometheus)
 - Security observability and incident-oriented design
 
-Target roles:
+Relevant roles:
 
 - Security Engineer
 - Application Security Engineer
@@ -24,10 +24,10 @@ Target roles:
 
 This repository contains the full 88/CK platform as a monorepo. The core implementation is in [88ck-immune-layer](88ck-immune-layer/README.md), with four cooperating runtime domains:
 
-1. `pillar1-morphic`: ingress gateway and adaptive security filter
-2. `pillar2-consensus`: replay-safe and zero-knowledge oriented admission and consensus security
-3. `pillar3-entropy`: anomaly detection and explainability pipeline (Python)
-4. `stability-engine`: Lyapunov-inspired rollout guardrail and orchestrator
+1. pillar1-morphic: ingress gateway and adaptive security filter
+2. pillar2-consensus: replay-safe and zero-knowledge oriented admission and consensus security
+3. pillar3-entropy: anomaly detection and explainability pipeline (Python)
+4. stability-engine: Lyapunov-inspired rollout guardrail and orchestrator
 
 ## Project Structure
 
@@ -73,7 +73,7 @@ docker compose up --build
 
 ## Development Commands
 
-Run these from `88ck-immune-layer` unless noted otherwise.
+Run these from 88ck-immune-layer unless noted otherwise.
 
 ```bash
 # Go tests for Pillar 2
@@ -93,10 +93,10 @@ cd ../adversarial-harness && python runner.py --strict
 
 Technical docs live in `88ck-immune-layer/docs/`:
 
-- `architecture.md`
-- `api.md`
-- `theory.md`
-- `coupling-problem.md`
+- architecture.md
+- api.md
+- theory.md
+- coupling-problem.md
 
 For full implementation details and service-level information, start with:
 

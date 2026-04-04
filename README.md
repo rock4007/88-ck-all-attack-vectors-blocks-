@@ -137,6 +137,68 @@ cd ../pillar1-morphic && go test ./internal/securityfilter/...
 cd ../adversarial-harness && python runner.py --strict
 ```
 
+## Repository Layout
+
+```text
+88ck-immune-layer/
+├── pillar1-morphic/          # Gateway, SQLi/malware filter, gamma coupling, xDS
+│   ├── cmd/gateway/          # HTTP entrypoint (port 8080)
+│   └── internal/
+│       ├── securityfilter/   # Ingress threat detection + defuser
+│       ├── metrics/          # Prometheus + OTel declarations
+│       ├── gamma/            # Lyapunov coupling controller
+│       ├── scheduler/        # ChaCha20-secured adaptive scheduler
+│       └── xds/              # Envoy control-plane publisher
+│
+├── pillar2-consensus/        # ZK agreement, replay guard, PQ attestation
+│   ├── cmd/consensus/        # Consensus node entrypoint
+│   └── internal/
+│       ├── zkp/              # Ed25519 + SHA-256 proof-of-possession
+│       └── security/         # 3-tier admission gate
+│
+├── pillar3-entropy/          # Python anomaly detection
+│   ├── cmd/detector/         # Detector entrypoint
+│   └── internal/
+│       ├── baseline/         # Baseline tracker
+│       ├── embedding/        # Embedding-based scoring
+│       ├── explainability/   # SHAP layer
+│       └── graph/            # WL-style graph scorer
+│
+├── stability-engine/         # Lyapunov guardrail + orchestrator
+│   └── cmd/engine/           # HTTP API (port 8090)
+│
+├── frontend/                 # React + Vite + Tailwind ops UI
+│
+├── adversarial-harness/      # MITRE-style scenario runner
+│
+├── infra/
+│   ├── docker-compose.yml
+│   ├── helm/                 # Kubernetes Helm chart
+│   └── prometheus/           # Alert + recording rules
+│
+├── docs/                     # Architecture, theory, API docs
+└── scripts/                  # Bootstrap and validation utilities
+```
+
+---
+
+## CI / CD Pipelines
+
+| Workflow | Trigger | Purpose |
+|---|---|---|
+| `ci.yml` | Push / PR | Build, test, coverage enforce |
+| `security-scan.yml` | Push / PR | Dependency and secrets scan |
+| `adversarial-test.yml` | Schedule + PR | MITRE scenario regression |
+| `release.yml` | Tag `v*` | Multi-arch image build + push |
+
+---
+
+## Current Scope Notes
+
+- This is an engineering project and learning platform, not a turnkey commercial product.
+- Some controls are simplified prototypes intended to show design approach and integration patterns.
+- Use the docs and tests in each component to understand current behavior and limitations.
+
 ## Documentation
 
 Technical docs live in `88ck-immune-layer/docs/`:

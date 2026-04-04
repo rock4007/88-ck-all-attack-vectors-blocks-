@@ -2,6 +2,10 @@
 
 Security-focused distributed systems project with adaptive filtering, consensus hardening, anomaly detection, and rollout guardrails.
 
+## Change Authority
+
+This repository is owner-controlled. See [AUTHORITY_POLICY.md](AUTHORITY_POLICY.md) for the exact approval and branch-protection rules.
+
 ## Hiring Snapshot
 
 This repository can be used as a cybersecurity engineering portfolio. It demonstrates:
@@ -99,7 +103,7 @@ This project aligns well with:
 
 ### Prerequisites
 
-- Go 1.22+
+- Go 1.25+
 - Python 3.11+
 - Node.js 20+
 - Docker + Docker Compose
@@ -147,8 +151,8 @@ cd ../adversarial-harness && python runner.py --strict
 │       ├── securityfilter/   # Ingress threat detection + defuser
 │       ├── metrics/          # Prometheus + OTel declarations
 │       ├── gamma/            # Lyapunov coupling controller
-│       ├── scheduler/        # ChaCha20-secured adaptive scheduler
-│       └── xds/              # Envoy control-plane publisher
+│       ├── scheduler/        # Bounded score scheduler
+│       └── xds/              # In-process xDS publisher stub
 │
 ├── pillar2-consensus/        # ZK agreement, replay guard, PQ attestation
 │   ├── cmd/consensus/        # Consensus node entrypoint

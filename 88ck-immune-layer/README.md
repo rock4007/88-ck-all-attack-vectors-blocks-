@@ -8,7 +8,7 @@
 
 [![Build](https://img.shields.io/github/actions/workflow/status/rock4007/88-ck-all-attack-vectors-blocks-/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/rock4007/88-ck-all-attack-vectors-blocks-/actions)
 [![Security Scan](https://img.shields.io/github/actions/workflow/status/rock4007/88-ck-all-attack-vectors-blocks-/security-scan.yml?branch=main&style=flat-square&label=Security%20Scan&color=green)](https://github.com/rock4007/88-ck-all-attack-vectors-blocks-/actions)
-[![Go Version](https://img.shields.io/badge/Go-1.22%2B-00ADD8?style=flat-square&logo=go)](https://go.dev)
+[![Go Version](https://img.shields.io/badge/Go-1.25%2B-00ADD8?style=flat-square&logo=go)](https://go.dev)
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](./LICENSE)
 [![Coverage](https://img.shields.io/badge/Coverage-Enforced-brightgreen?style=flat-square)](./github/workflows/ci.yml)
@@ -102,7 +102,7 @@ Ingress requests pass through a layered security filter before reaching downstre
 |---|---|
 | **SQLi Blocker** | 8 regex patterns covering UNION, DROP, comment injection, error-based exfiltration |
 | **Malware Defuser** | 11 signature patterns; dangerous bytes stripped before logging |
-| **xDS Policy Engine** | Dynamic control-plane configuration pushed to Envoy proxies |
+| **xDS Publisher** | In-process publisher stub for policy snapshots |
 | **Gamma Coupling** | Rate-limits cross-pillar influence to prevent destabilization cascades |
 | **Prometheus Metrics** | Per-reason security block counter exposed at `/metrics` |
 
@@ -158,7 +158,7 @@ For blocked requests, the system applies:
 
 ## Quick Start
 
-**Prerequisites:** Go 1.22+, Python 3.11+, Docker, Node.js 20+
+**Prerequisites:** Go 1.25+, Python 3.11+, Docker, Node.js 20+
 
 ```bash
 # Clone and bootstrap
@@ -279,8 +279,8 @@ Returns `200 ok` when the engine is live.
 │       ├── securityfilter/   # Ingress threat detection + defuser
 │       ├── metrics/          # Prometheus + OTel declarations
 │       ├── gamma/            # Lyapunov coupling controller
-│       ├── scheduler/        # ChaCha20-secured adaptive scheduler
-│       └── xds/              # Envoy control-plane publisher
+│       ├── scheduler/        # Bounded score scheduler
+│       └── xds/              # In-process xDS publisher stub
 │
 ├── pillar2-consensus/        # ZK agreement, replay guard, PQ attestation
 │   ├── cmd/consensus/        # Consensus node entrypoint

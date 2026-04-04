@@ -2,6 +2,24 @@
 
 Defense-first distributed systems stack with adaptive filtering, zero-knowledge consensus, anomaly detection, and stability guardrails.
 
+## Hiring Snapshot
+
+This repository is positioned as a cybersecurity engineering portfolio that demonstrates:
+
+- Secure backend engineering in Go and Python
+- Practical AppSec controls (injection blocking, payload defusing, replay resistance)
+- Distributed system security patterns (admission gates, consensus hardening)
+- Cloud-native operations (Docker, Compose, Helm, Prometheus)
+- Security observability and incident-oriented design
+
+Target roles:
+
+- Security Engineer
+- Application Security Engineer
+- Platform Security Engineer
+- Detection Engineer / SOC Engineer
+- Cloud Security Engineer
+
 ## Repository Overview
 
 This repository contains the full 88/CK platform as a monorepo. The core implementation is in [88ck-immune-layer](88ck-immune-layer/README.md), with four cooperating runtime domains:

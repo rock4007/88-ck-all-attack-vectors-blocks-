@@ -27,6 +27,7 @@ func Middleware(filter *Filter) func(http.Handler) http.Handler {
 
 			// Stable trace id helps correlate blocks across logs and metrics without exposing raw payloads.
 			traceID := hashTraceID(r.Method + "|" + r.URL.String() + "|" + verdict.Evidence)
+			// #nosec G706 -- evidence is normalized via Defuse and trace id is hashed.
 			log.Printf("security_block reason=%s trace_id=%s evidence=%s", verdict.Reason, traceID, Defuse(verdict.Evidence))
 			metrics.IncSecurityBlock(verdict.Reason)
 

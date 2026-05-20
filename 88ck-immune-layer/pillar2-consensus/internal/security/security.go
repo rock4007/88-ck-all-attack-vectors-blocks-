@@ -19,12 +19,17 @@ type AdmissionDecision struct {
 }
 
 type ReplayGuard struct {
-	mu   sync.Mutex
+	mu sync.Mutex
+
+	// seen keeps a bounded recent window of nonces to limit memory growth.
+	// Note: this is an in-memory heuristic; production systems should prefer
+	// a time-bounded nonce mechanism at the protocol level.
 	seen map[string]struct{}
+	max  int
 }
 
 func NewReplayGuard() *ReplayGuard {
-	return &ReplayGuard{seen: make(map[string]struct{})}
+	return &ReplayGuard{seen: make(map[string]struct{}), max: 10000}
 }
 
 func (r *ReplayGuard) TryMark(nonce string) bool {
@@ -33,6 +38,13 @@ func (r *ReplayGuard) TryMark(nonce string) bool {
 
 	if _, ok := r.seen[nonce]; ok {
 		return false
+	}
+
+	// Simple bounded eviction: if we’re at capacity, reset the set.
+	// This preserves the main replay-prevention behavior while preventing
+	// unbounded memory growth under attack.
+	if len(r.seen) >= r.max {
+		r.seen = make(map[string]struct{})
 	}
 	r.seen[nonce] = struct{}{}
 	return true
@@ -66,3 +78,4 @@ func (l *Layer) Evaluate(req AdmissionRequest) AdmissionDecision {
 	}
 	return AdmissionDecision{Allowed: true, Reason: "admitted"}
 }
+

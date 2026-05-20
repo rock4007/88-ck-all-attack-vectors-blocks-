@@ -99,3 +99,4 @@ func matchAny(patterns []*regexp.Regexp, input string) (string, string) {
 	}
 	return "", ""
 }
+

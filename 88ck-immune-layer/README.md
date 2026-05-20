@@ -122,6 +122,8 @@ Entropy focuses on structural and embedding-based anomaly detection with explain
 | Capability | Detail |
 |---|---|
 | **Graph Scoring** | Weisfeiler-Leman style structural comparison |
+| **Attack Chain Detection** | Real-time mapping of correlated alerts into probable MITRE ATT&CK chains |
+| **Attack Graph Representation** | Component/technique graph model for CoEB path analysis and hardening |
 | **Embedding Detector** | ONNX-backed vector distance anomaly scoring |
 | **Explainability** | SHAP value attribution for every anomaly decision |
 | **Baseline Tracking** | Rolling normality windows with drift alerting |
@@ -135,6 +137,16 @@ The stability engine evaluates rollout risk before a change is approved.
 | **Guardrail API** | POST `/evaluate` — approve or block a rollout proposal |
 | **Risk Classification** | Critical / High / Medium / Low bands |
 | **Orchestrator Plans** | `hold`, `stage-rollout`, `freeze-change-and-monitor`, `isolate-and-recover` |
+
+### Enterprise Resilience and Observability
+This stack is designed for enterprise deployment with live resilience telemetry, hardened policy enforcement, and service-level status visibility.
+
+- **Enterprise stability monitoring** via the immune gateway and stability engine
+- **Metrics-first architecture** exposing Prometheus-compatible `/metrics`
+- **Real-time status streaming** over `/immune/ws` for dashboard and orchestration integration
+- **Deterministic stability scoring** with `M(t)`, `C(t)`, `D(t)`, and `E(t)` components
+- **Service identity digest** for trusted operational signing/health checks
+- **Policy hardening response** triggers on stability threshold breach
 
 ---
 
@@ -198,6 +210,27 @@ curl -sS -X POST http://localhost:8090/evaluate \
 curl -i "http://localhost:8080/tick?q=1'+OR+'1'='1"
 
 # This should return a 200
+curl -i "http://localhost:8080/tick"
+```
+
+**Check enterprise status:**
+```bash
+curl -sS http://localhost:8080/immune/status | jq
+```
+
+**Stream live resilience updates:**
+```bash
+# Example websocket client; replace with enterprise dashboard or orchestration client
+python - <<'PY'
+import websocket
+ws = websocket.create_connection('ws://localhost:8080/immune/ws')
+print(ws.recv())
+ws.close()
+PY
+```
+
+**Health check:**
+```bash
 curl -i "http://localhost:8080/healthz"
 ```
 

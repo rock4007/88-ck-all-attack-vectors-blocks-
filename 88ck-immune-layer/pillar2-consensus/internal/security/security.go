@@ -40,11 +40,11 @@ func (r *ReplayGuard) TryMark(nonce string) bool {
 		return false
 	}
 
-	// Simple bounded eviction: if we’re at capacity, reset the set.
-	// This preserves the main replay-prevention behavior while preventing
-	// unbounded memory growth under attack.
+	// Deny when at capacity rather than resetting: clearing the set would
+	// allow replay of all previously admitted nonces. Callers should rotate
+	// to a new session or use time-bounded nonces at the protocol level.
 	if len(r.seen) >= r.max {
-		r.seen = make(map[string]struct{})
+		return false
 	}
 	r.seen[nonce] = struct{}{}
 	return true

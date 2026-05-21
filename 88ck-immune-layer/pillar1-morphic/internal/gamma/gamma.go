@@ -23,7 +23,7 @@ const (
 type GammaProtocol struct {
 	deltaT      time.Duration
 	tauEmb      time.Duration
-	redisClient redis.Client
+	redisClient *redis.Client
 	metrics     *metrics.Metrics
 }
 
@@ -52,7 +52,7 @@ func (c *Coupler) Apply(score float64) float64 {
 	return score * c.coefficient
 }
 
-func NewGammaProtocol(deltaT time.Duration, rdb redis.Client) *GammaProtocol {
+func NewGammaProtocol(deltaT time.Duration, rdb *redis.Client) *GammaProtocol {
 	if deltaT <= 0 {
 		deltaT = DefaultDeltaT
 	}

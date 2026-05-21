@@ -14,7 +14,7 @@
 - [x] xds.go
 
 ## 4. Wire Gateway
-- [ ] main.go (config, servers, endpoints)
+- [x] main.go (config, servers, endpoints)
 
 ## 5. Add Tests
 - [x] securityfilter: verify SQLi/malware blocking via InspectRequest

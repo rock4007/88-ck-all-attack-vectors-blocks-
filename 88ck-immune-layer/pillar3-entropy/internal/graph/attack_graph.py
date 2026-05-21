@@ -73,7 +73,6 @@ class AttackGraph:
 
     def get_paths(self, source: str, destination_prefix: str) -> List[List[str]]:
         results: List[List[str]] = []
-        visited: List[str] = []
 
         def dfs(current: str, path: List[str]) -> None:
             if current.startswith(destination_prefix):

@@ -11,11 +11,11 @@
 [![Go Version](https://img.shields.io/badge/Go-1.25%2B-00ADD8?style=flat-square&logo=go)](https://go.dev)
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](./LICENSE)
-[![Coverage](https://img.shields.io/badge/Coverage-Enforced-brightgreen?style=flat-square)](./github/workflows/ci.yml)
+[![Coverage](https://img.shields.io/badge/Coverage-Enforced-brightgreen?style=flat-square)](../.github/workflows/ci.yml)
 
 <br/>
 
-> A hands-on reference implementation for secure ingress, resilient consensus, anomaly detection, and guarded rollouts.
+> A hands-on reference implementation for secure ingress, resilient consensus, graph-aware anomaly detection, and guarded rollouts.
 
 </div>
 
@@ -23,13 +23,20 @@
 
 ## What is 88/CK Immune Layer?
 
-88/CK Immune Layer is a multi-service project that explores how security controls can be combined across the request path, consensus path, and rollout path. It includes:
+88/CK Immune Layer is a multi-service project that explores how security controls can be combined across the request path, consensus path, detection path, and rollout path. It is built as a practical portfolio-grade reference system rather than a whitepaper demo.
 
-- Adaptive policy controls for ingress handling
-- Zero-knowledge oriented admission checks for consensus traffic
-- AI-supported anomaly detection with explainability components
-- Lyapunov-inspired rollout guardrails for stability checks
-- Ingress filtering and payload defusing for common attack classes
+It includes:
+
+- Adaptive ingress controls with SQLi and payload-delivery blocking
+- Replay-resistant consensus admission with staged proof checks
+- Graph-aware attack-chain detection, prediction, and disruption hooks
+- AI-supported anomaly scoring with explainability components
+- Lyapunov-inspired rollout guardrails for stability decisions
+- Docker, Helm, Prometheus, CI, SAST, and adversarial regression coverage
+
+### Why it matters
+
+Modern systems rarely fail through one control plane. A malicious request can become a replay attempt, a lateral movement path, a stability event, and an incident workflow all at once. This repo demonstrates how those signals can be wired together with measurable controls and tests.
 
 ---
 
@@ -124,6 +131,8 @@ Entropy focuses on structural and embedding-based anomaly detection with explain
 | **Graph Scoring** | Weisfeiler-Leman style structural comparison |
 | **Attack Chain Detection** | Real-time mapping of correlated alerts into probable MITRE ATT&CK chains |
 | **Attack Graph Representation** | Component/technique graph model for CoEB path analysis and hardening |
+| **Predictive Disruption** | Technique-aware future-chain prediction with proactive mitigation recommendations |
+| **Chain-Aware Consensus** | Raises verification requirements when graph risk increases |
 | **Embedding Detector** | ONNX-backed vector distance anomaly scoring |
 | **Explainability** | SHAP value attribution for every anomaly decision |
 | **Baseline Tracking** | Rolling normality windows with drift alerting |
@@ -362,6 +371,19 @@ Returns `200 ok` when the engine is live.
 
 Latest industry-style validation report:
 - [Industry Validation Report](./docs/industry-validation-report.md)
+
+Current local verification covers:
+
+```bash
+go test ./pillar1-morphic/... ./pillar2-consensus/... ./stability-engine/...
+python -m compileall pillar3-entropy/cmd pillar3-entropy/internal
+bandit -r pillar3-entropy
+npm run build --prefix frontend
+docker compose -f infra/docker-compose.yml config -q
+docker compose -f infra/docker-compose.adversarial.yml config -q
+helm lint infra/helm/88ck
+PYTHONPATH=pillar3-entropy python adversarial-harness/runner.py --strict
+```
 
 Validated gates include:
 - Go static analysis + race tests

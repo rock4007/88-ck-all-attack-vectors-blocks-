@@ -63,7 +63,10 @@ func (f *Filter) InspectRequest(r *http.Request) Verdict {
 	}
 
 	if r.Body != nil && shouldInspectBody(r.Method) {
-		bodyBytes, _ := io.ReadAll(io.LimitReader(r.Body, f.maxInspectBytes))
+		bodyBytes, err := io.ReadAll(io.LimitReader(r.Body, f.maxInspectBytes))
+		if err != nil {
+			return Verdict{Allowed: false, Reason: "body_read_error"}
+		}
 		// Replace body so downstream handlers still receive request payload.
 		r.Body = io.NopCloser(strings.NewReader(string(bodyBytes)))
 		parts = append(parts, string(bodyBytes))

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections import deque
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
@@ -36,6 +37,9 @@ class PotentialChain:
 
 
 def map_alert_to_technique(alert: Alert) -> str:
+    # Explicit technique in metadata always wins over heuristic description matching.
+    if "technique_id" in alert.metadata:
+        return alert.metadata["technique_id"]
     mapping = {
         "sql injection": "T1190",
         "replay": "T1078",
@@ -47,16 +51,21 @@ def map_alert_to_technique(alert: Alert) -> str:
     for keyword, technique in mapping.items():
         if keyword in alert.description.lower():
             return technique
-    return alert.metadata.get("technique_id", "T1059")
+    return "T1059"
 
 
 def find_attack_paths(graph: Dict[str, List[AttackEdge]], source: str, technique_id: str) -> List[AttackPath]:
-    paths: List[AttackPath] = []
-    visited = set()
-    queue: List[AttackPath] = [AttackPath(nodes=[source], edges=[])]
+    """Find all paths from source to critical assets.
 
-    while queue:
-        current = queue.pop(0)
+    technique_id gates only the first hop (matching the alert vector); subsequent
+    hops follow any edge because attackers pivot using different techniques.
+    """
+    paths: List[AttackPath] = []
+    visited: set = set()
+    q: deque = deque([AttackPath(nodes=[source], edges=[])])
+
+    while q:
+        current = q.popleft()
         last = current.nodes[-1]
         if last.startswith("critical:"):
             paths.append(current)
@@ -66,7 +75,8 @@ def find_attack_paths(graph: Dict[str, List[AttackEdge]], source: str, technique
             continue
 
         for edge in graph.get(last, []):
-            if edge.technique_id != technique_id:
+            # Only apply technique filter on the first hop from the alert source.
+            if last == source and edge.technique_id != technique_id:
                 continue
             if edge.target in current.nodes:
                 continue
@@ -76,7 +86,7 @@ def find_attack_paths(graph: Dict[str, List[AttackEdge]], source: str, technique
             if signature in visited:
                 continue
             visited.add(signature)
-            queue.append(next_path)
+            q.append(next_path)
 
     return paths
 

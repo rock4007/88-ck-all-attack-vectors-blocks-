@@ -171,6 +171,7 @@ func (il *ImmuneLayer) CalculateStability() {
 	eValue := il.calculateSemanticEntropy()
 
 	sValue := alpha*mValue + beta*cValue + delta*dValue - gamma*eValue
+	sValue = math.Max(0, math.Min(1, sValue))
 
 	il.StabilityFunction.MValue = mValue
 	il.StabilityFunction.CValue = cValue
@@ -306,6 +307,8 @@ func (il *ImmuneLayer) triggerStabilityResponse() {
 }
 
 func (il *ImmuneLayer) enforceHardening() {
+	il.SystemTopology.mu.Lock()
+	defer il.SystemTopology.mu.Unlock()
 	for _, edge := range il.SystemTopology.Edges {
 		if !edge.Secured {
 			edge.Secured = true
@@ -336,6 +339,8 @@ func (il *ImmuneLayer) AddEdge(edge *Edge) {
 }
 
 func (il *ImmuneLayer) RegisterRotation(config *RotationConfig) {
+	il.mu.Lock()
+	defer il.mu.Unlock()
 	il.MorphologicalLogic.RotationSchedule[config.ComponentID] = config
 	il.MorphologicalLogic.LastRotation[config.ComponentID] = config.LastRotation
 }

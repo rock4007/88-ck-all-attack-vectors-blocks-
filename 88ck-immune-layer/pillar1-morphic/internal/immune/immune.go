@@ -103,23 +103,23 @@ type VSCodeSecurityContext struct {
 }
 
 type PromptInjectionProtection struct {
-	InputSanitization       bool      `json:"input_sanitization"`
-	ToolMetadataValidation  bool      `json:"tool_metadata_validation"`
-	InstructionBoundary     bool      `json:"instruction_boundary"`
-	ContentVerification     bool      `json:"content_verification"`
-	LastProtectionUpdate    time.Time `json:"last_protection_update"`
+	InputSanitization      bool      `json:"input_sanitization"`
+	ToolMetadataValidation bool      `json:"tool_metadata_validation"`
+	InstructionBoundary    bool      `json:"instruction_boundary"`
+	ContentVerification    bool      `json:"content_verification"`
+	LastProtectionUpdate   time.Time `json:"last_protection_update"`
 }
 
 type ImmuneLayer struct {
-	SystemTopology           *SystemTopology           `json:"system_topology"`
-	ChainProtection          *ChainProtection          `json:"chain_protection"`
-	MorphologicalLogic       *MorphologicalLogic       `json:"morphological_logic"`
-	ConsensusIntegrity       *ConsensusIntegrity       `json:"consensus_integrity"`
-	SemanticEntropy          *SemanticEntropy          `json:"semantic_entropy"`
-	StabilityFunction        *StabilityFunction        `json:"stability_function"`
-	VSCodeSecurityContext    *VSCodeSecurityContext    `json:"vscode_security_context"`
+	SystemTopology            *SystemTopology            `json:"system_topology"`
+	ChainProtection           *ChainProtection           `json:"chain_protection"`
+	MorphologicalLogic        *MorphologicalLogic        `json:"morphological_logic"`
+	ConsensusIntegrity        *ConsensusIntegrity        `json:"consensus_integrity"`
+	SemanticEntropy           *SemanticEntropy           `json:"semantic_entropy"`
+	StabilityFunction         *StabilityFunction         `json:"stability_function"`
+	VSCodeSecurityContext     *VSCodeSecurityContext     `json:"vscode_security_context"`
 	PromptInjectionProtection *PromptInjectionProtection `json:"prompt_injection_protection"`
-	mu                       sync.RWMutex
+	mu                        sync.RWMutex
 }
 
 func NewImmuneLayer() *ImmuneLayer {
